@@ -1,0 +1,330 @@
+	
+
+
+
+
+// 	SELECTION SORT
+
+
+#include<bits/stdc++.h>
+
+void selectionsort(int arr[], int n)
+{
+    for( int i=0; i<n-1; i++)
+    {
+        int min_index=i;
+        for( int j=i+1;j<n;j++)
+        {
+            if(arr[j]<arr[min_index])
+                min_index=j;
+        }
+        int temp=arr[i];
+        arr[i]=arr[min_index];
+        arr[min_index]=temp;
+    }
+    for(int i=0;i<n;i++)
+        std::cout<<arr[i];
+}
+
+
+int main() {
+    int arr[] = {2,1,5,4,3};
+    int n=5;
+    selectionsort(arr,n);  
+
+    return 0;
+}
+
+
+
+******************************************************************************************************
+
+
+
+
+//		BUBBLE SORT
+
+
+
+#include<bits/stdc++.h>
+
+void bubblesort(int arr[], int n)
+{
+    for( int i=0; i<n-1; i++)
+    {
+        for( int j=0; j<n-i-1; j++)
+        {
+            if(arr[j+1]<arr[j])
+                std::swap(arr[j+1],arr[j]);
+        }
+    }
+   
+   for(int i=0;i<n;i++)
+        std::cout<<arr[i]<<",";
+}
+
+
+int main() {
+    int arr[] = {10,9,8,7,6,5};
+    int n=6;
+    bubblesort(arr,n);  
+
+    return 0;
+}
+
+
+
+*****************************************************************************************************
+
+
+
+//		INSERTION SORT
+
+
+
+#include<bits/stdc++.h>
+
+void insertionsort(int arr[], int n)
+{
+    for( int i=1; i<n; i++)
+    {
+        int temp=arr[i];
+        int j=i-1;
+        while( j>=0 && arr[j]>temp)
+        {
+            arr[j+1]=arr[j];
+            j=j-1;
+        }
+        arr[j+1]=temp;
+    }   
+   for(int i=0;i<n;i++)
+        std::cout<<arr[i]<<",";
+}
+
+
+int main() {
+    int arr[] = {6,5,4,3,2,1};
+    int n=6;
+    insertionsort(arr,n);  
+
+    return 0;
+}
+
+
+******************************************************************************************************
+
+
+
+//		QUICK SORT
+
+
+
+#include<bits/stdc++.h>
+
+int partition( int low, int high, int arr[])
+{
+    int i = low;
+    int j = high;
+    int pivot = arr[low];
+    
+    while(i<j)
+    {
+        while(pivot>=arr[i]) i++;
+        while(pivot<arr[j]) j--;
+        if( i<j ) std::swap(arr[i],arr[j]);
+    }
+    std::swap(arr[j],arr[low]);
+    return j;
+}
+
+
+
+void quicksort(int low, int high, int arr[])
+{
+   if(low < high)
+   {
+        int pivot = partition(low,high,arr);
+        quicksort(low,pivot-1,arr);
+        quicksort(pivot+1,high,arr);
+   }
+   
+}
+
+
+        
+int main() {
+    int arr[] = {10,9,8,7,6,5,4,3,2,1};
+    int n=10;
+    quicksort(0,n-1,arr);  
+    for(int i=0;i<n;i++)
+        std::cout<<arr[i]<<",";
+    return 0;
+}
+
+
+
+********************************************************************************************************
+
+
+
+//		MERGE SORT
+
+
+#include<bits/stdc++.h>
+
+
+void merge(int low, int mid, int high, int arr[])
+{
+    int len1=mid-low+1;
+    int len2=high-mid;
+    
+    int larr[len1],rarr[len2];
+    
+    for(int i=0; i<len1; i++)
+        larr[i]=arr[low+i];
+    for(int j=0; j<len2; j++)
+        rarr[j]=arr[mid+1+j];
+        
+    int i,j,k;
+    i=0;j=0;k=low;
+    
+    while(i<len1 && j<len2)
+    {
+        if(larr[i]<=rarr[j])
+            arr[k++]=larr[i++];
+        else
+            arr[k++]=rarr[j++];
+    }
+    
+    while(i<len1)
+        arr[k++]=larr[i++];
+    while(j<len2)
+        arr[k++]=rarr[j++];
+}
+
+
+void mergesort(int low, int high, int arr[])
+{
+    if(low<high)
+    {
+        int mid=low+(high-low)/2;
+        mergesort(low,mid,arr);
+        mergesort(mid+1,high,arr);
+        merge(low,mid,high,arr);
+    }
+}
+
+int main() {
+    int arr[]={6,5,4,3,2,1};
+    int n=6;
+    mergesort(0,n,arr);
+    for(int i=0; i<n; i++)
+        std::cout<<arr[i]<<",";
+
+    return 0;
+}
+
+
+********************************************************************************************************
+
+				HEAP SORT	[Heap Sort, Insertion, Deletion]
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+//#define MAX 100
+
+void heapify(int arr[], int n, int i)
+{
+    int larger=i;
+    int l=i*2+1;
+    int r=i*2+2;
+    
+    if(l<n && arr[larger]<arr[l])
+        larger=l;
+    if(r<n && arr[larger]<arr[r])
+        larger=r;
+    if(larger!=i)
+    {
+        swap(arr[larger],arr[i]);
+        heapify(arr,n,larger);
+    }
+}
+void heapify_for_insertnode(int arr[], int n, int i)
+{
+    int parent=(i-1)/2;
+    if(arr[parent]>0)
+    {
+        if(arr[parent]<arr[i])
+        {
+            swap(arr[parent],arr[i]);
+            heapify_for_insertnode(arr,n,parent);
+        }
+    }
+}
+
+void heapify_for_deletenode(int arr[], int n, int i)
+{
+    int larger=i;
+    int l=i*2+1;
+    int r=i*2+2;
+    
+    if(l<n && arr[larger]<arr[l])
+        larger=l;
+    if(r<n && arr[larger]<arr[r])
+        larger=r;
+    if(larger!=i)
+    {
+        swap(arr[larger],arr[i]);
+        heapify(arr,n,larger);
+    }
+}
+
+
+void deletenode(int arr[], int n)
+{
+    arr[0]=arr[n-1];
+    n=n-1;
+    heapify_for_deletenode(arr,n,0);
+    
+}
+
+
+void insertnode(int arr[], int value,int n)
+{
+    n=n+1;
+    arr[n-1]=value;
+    heapify_for_insertnode(arr,n,n-1);
+}
+void heapsort(int arr[], int n)
+{
+    for(int i=n/2-1;i>=0;i--)
+        heapify(arr,n,i);
+        
+    for(int i=n-1;i>0;i--)
+    {
+        swap(arr[0],arr[i]);
+        heapify(arr,i,0);
+    }
+}
+
+
+
+
+int main() 
+{
+    int arr[]={9,7,5,3,2,1};
+    int value=55;
+    int n=6;
+    deletenode(arr,n);
+    //insertnode(arr,value,n);
+    //heapsort(arr,6);
+   
+   for(int i=0;i<n-1;i++)
+        std::cout<<arr[i]<<",";
+    
+    return 0;
+}
